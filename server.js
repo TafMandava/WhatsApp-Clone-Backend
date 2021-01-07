@@ -20,7 +20,24 @@ const port = process.env.PORT || 9000;
 
 /*
     middleware
+
+    post results without middleware
+    {
+        "_id": "5ff73d407b2a7e9a28871fd7",
+        "__v": 0
+    }
+
+    post results with middleware
+    {
+        "_id": "5ff74a56d7a0699b8b68fa46",
+        "message": "WhatsApp Messenger is a FREE messaging app",
+        "name": "Tafadzwa Mandava",
+        "timestamp": "Wed, 06 Jan 2021 22:49:25 GMT",
+        "received": false,
+        "__v": 0
+    }
 */
+app.use(express.json());
 
 /*
     db config
@@ -43,11 +60,27 @@ mongoose.connect(connection_url, {
     '/' end-point route
     Use in conjuction with a function that is invoked when the route fires off
     Set the response status code to 200 and send Hello World!
-    200 range OK
-    201 created - used when we send a message and the message was stored successfully in the database
-    Creating api route which we will be using to post messages into mongoDB
+    200 range OK for downling or getting data
+    201 created for uploading posting data - used when we send a message and the message was stored successfully in the database
 */
 app.get('/', (req, res) => res.status(200).send('Hello World!')); 
+/*
+    Creating an api that will return all the data that we have in our database
+*/
+app.get('/api/v1/messages/sync', (req, res) => {
+    Messages.find((error, data) => {
+        if(error) {
+            res.status(500).send(error);
+        } else {
+            res.status(200).send(data);
+        }
+    });
+});
+
+/*
+    Creating api route which we will be using to post messages into mongoDB
+    Do not post without spefifying the middleware settup app.use(express.json());
+*/
 app.post('/api/v1/messages/new', (req, res) => {
     const dbMessage = req.body;
     
