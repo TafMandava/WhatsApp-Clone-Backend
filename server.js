@@ -1,13 +1,17 @@
-// importing
+/* 
 
-//app config
+    importing
 
-// middleware
+    app config
 
-// DB config
+    middleware
 
-// All the mongo stuff
+    db config
 
-// api routes
+    all the mongo stuff
 
-// listen
+    api routes
+
+    listen
+
+*/
