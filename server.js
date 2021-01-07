@@ -56,9 +56,29 @@ db.once('open', () => {
     */
    const msgCollection = db.collection('messagecontents');
    const changeStream = msgCollection.watch();
-
+   /*
+       Whenever there are changes we save it in a change variable which we console log
+       If the change operation is an insert then there is a full document field outlined in the console log that we save in a variable messageDetails
+       Then we trigger pusher, which has a channel challed 'messages', event called inserted and the object for console logging (we do not need to specify all the attributes in the object since we are only using it for console logging)
+       If there is an error we just write to the console log
+   */
    changeStream.on('change', (change) => {
+       /*
+           Change stream trigger pusher
+       */
        console.log('A change occured', change);
+
+       if(change.operationType === 'insert') {
+           const messageDetails = change.fullDocument;
+           pusher.trigger('messages', 'inserted',
+               {
+                   name: messageDetails.user,
+                   message: messageDetails.message
+               }
+           );
+       } else {
+           console.log('Error triggering Pusher');
+       }
    });
 });
 
