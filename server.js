@@ -7,6 +7,7 @@ import express from 'express';
     This is the client that's connecting to our database
 */
 import mongoose from 'mongoose';
+import Messages from './dbMessages.js';
 
 /*
     app config
@@ -44,8 +45,25 @@ mongoose.connect(connection_url, {
     Set the response status code to 200 and send Hello World!
     200 range OK
     201 created - used when we send a message and the message was stored successfully in the database
+    Creating api route which we will be using to post messages into mongoDB
 */
 app.get('/', (req, res) => res.status(200).send('Hello World!')); 
+app.post('/api/v1/messages/new', (req, res) => {
+    const dbMessage = req.body;
+    
+    /*
+        Passing in the message structure in the request body and saving into Messages
+        Using mongoose to create a new message using the content that we sent in the bpdy
+        Handle the error
+    */
+    Messages.create(dbMessage, (error, data) => {
+        if(error) {
+            res.status(500).send(error);
+        } else {
+            res.status(201).send(data);
+        }
+    });
+});
 
 /*
     listen
