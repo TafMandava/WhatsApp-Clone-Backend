@@ -3,6 +3,10 @@
     importing express
 */
 import express from 'express';
+/*
+    This is the client that's connecting to our database
+*/
+import mongoose from 'mongoose';
 
 /*
     app config
@@ -19,7 +23,14 @@ const port = process.env.PORT || 9000;
 
 /*
     db config
+    Pass in connection_url and configuration values to help mongoose connect to the dayabase
 */
+const connection_url = 'mongodb+srv://admin:2Wj2yj6U4Maj0FgS@cluster0.7trec.mongodb.net/whatsappdb?retryWrites=true&w=majority';
+mongoose.connect(connection_url, {
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 
 /*
     all the mongo stuff
