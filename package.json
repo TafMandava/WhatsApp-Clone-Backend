@@ -20,6 +20,7 @@
   "homepage": "https://github.com/TafMandava/WhatsApp-Clone-Backend#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^5.11.10"
+    "mongoose": "^5.11.10",
+    "pusher": "^4.0.2"
   }
 }

@@ -8,6 +8,7 @@ import express from 'express';
 */
 import mongoose from 'mongoose';
 import Messages from './dbMessages.js';
+import Pusher from 'pusher';
 
 /*
     app config
@@ -17,6 +18,49 @@ import Messages from './dbMessages.js';
 */
 const app = express();
 const port = process.env.PORT || 9000;
+/*
+    What is Pusher?
+    In firebase we can use a Realtime database
+    That is when something is added or deleted the application is triggered. 
+    At the exact same time the changes are going to be made on the client/ application side
+
+    With mongoDB, this is not the case. 
+    You will have to refresh the client page and refresh all the times or you will have to add functionality to invoke the APIs for instance after every 5 second 
+
+    With Pusher we are going to introduce mongoBD change stream
+    Implement a change stream that will be set to one of our collections.
+    Whenever there are changes in that collection i.e a message is added, edited or deleted
+    At that time the change stream is going to update the pusher and it's going to upload the message to pusher. We will connect it to our front end and the pusher server will trigger our front end and push down our data changes to the app. Followed by making a new api request to the backend. This will refresh everything. Thus making our application fully realtime 
+
+    Pusher listens to the backend
+    Everytime the backend changes the pusher informs the frontend resulting to the frontend reloading all the data
+*/
+const pusher = new Pusher({
+    appId: "1134458",
+    key: "711eaf04cbfc3efa3e97",
+    secret: "e2d8d38ecc1e3c62ed67",
+    cluster: "eu",
+    useTLS: true
+});
+/*
+    Adding change stream so that it triggers the pusher
+    Change stream is going to listen to our application or database and if there are any changes it's going to trigger our pusher
+    Once mongoose connection is open invoke a function that let's us know that our conection is working
+    We want the function to fire off when something has changed in the database
+*/
+const db = mongoose.connection;
+db.once('open', () => {
+    console.log('DB Connected');
+    /*
+        Create a collection 
+    */
+   const msgCollection = db.collection('messagecontents');
+   const changeStream = msgCollection.watch();
+
+   changeStream.on('change', (change) => {
+       console.log('A change occured', change);
+   });
+});
 
 /*
     middleware

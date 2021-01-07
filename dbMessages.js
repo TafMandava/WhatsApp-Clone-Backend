@@ -12,9 +12,10 @@ const whatsappSchema = mongoose.Schema({
 });
 
 /*
-    Give a name to the collection - messageContent
+    Give a name to the collection - messagecontent
     i.e we can have multiple documents. In sql we have one database and many tables
     In mongo (no sql) collections are similar to tables (in sql)
     Use the whatsappSchema for this collection
+    This is the collection
 */
-export default mongoose.model('messageContent', whatsappSchema);
+export default mongoose.model('messagecontents', whatsappSchema);
