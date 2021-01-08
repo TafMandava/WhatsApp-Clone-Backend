@@ -102,6 +102,17 @@ db.once('open', () => {
     }
 */
 app.use(express.json());
+/*
+    These are the code headers
+    Allow requests to come from any end point and we will be admitting sny kind of headers
+    Evejrything is going to be accepted
+    After running the two rules we wi;; push the requested next function to run
+*/
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', '*');
+    next();
+});
 
 /*
     db config
