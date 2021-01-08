@@ -63,7 +63,7 @@ db.once('open', () => {
        Then we trigger pusher, which has a channel challed 'messages', event called inserted and the object for console logging (we do not need to specify all the attributes in the object since we are only using it for console logging)
        If there is an error we just write to the console log
    */
-   changeStream.on('change', (change) => {
+   changeStream.on('change', (change) => { 
        /*
            Change stream trigger pusher
        */
