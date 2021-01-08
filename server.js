@@ -149,6 +149,7 @@ mongoose.connect(connection_url, {
 app.get('/', (req, res) => res.status(200).send('Hello World!')); 
 /*
     Creating an api that will return all the data that we have in our database
+    Not recommended in Production
 */
 app.get('/api/v1/messages/sync', (req, res) => {
     Messages.find((error, data) => {
