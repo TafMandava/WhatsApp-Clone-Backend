@@ -9,6 +9,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import Messages from './dbMessages.js';
 import Pusher from 'pusher';
+import cors from 'cors';
 
 /*
     app config
@@ -107,12 +108,19 @@ app.use(express.json());
     Allow requests to come from any end point and we will be admitting sny kind of headers
     Evejrything is going to be accepted
     After running the two rules we wi;; push the requested next function to run
-*/
+    Alternatively, use cors
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', '*');
     next();
 });
+*/
+/*
+    Using CORS to set headers
+*/
+app.use(cors());
+
 
 /*
     db config
